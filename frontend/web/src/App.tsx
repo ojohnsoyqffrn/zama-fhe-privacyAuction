@@ -50,25 +50,12 @@ export default function App() {
       if (typeof window === 'undefined' || typeof window.ethereum === 'undefined') {
         return false;
       }
-      
       const provider = new ethers.BrowserProvider(window.ethereum);
-      
       const network = await provider.getNetwork();
-      if (network.chainId !== 11155111n) {
-        return false;
-      }
-      
-      const code = await provider.getCode(config.contractAddress);
-      if (code === "0x") {
-        return false;
-      }
-      
-      const accounts = await provider.send("eth_accounts", []);
-      if (accounts.length === 0) {
-        return false;
-      }
-      
-      const contract = new ethers.Contract(
+      await provider.getCode(config.contractAddress);
+      await provider.send("eth_accounts", []);
+
+      new ethers.Contract(
         config.contractAddress,
         ABI,
         provider
@@ -82,8 +69,8 @@ export default function App() {
 
   useEffect(() => {
     diagnoseNetwork().then(() => {
-      loadAuctions().finally(() => setLoading(false));
     });
+    loadAuctions().finally(() => setLoading(false));
   }, []);
 
 
