@@ -6,7 +6,7 @@ A fully homomorphic encryption (FHE) enabled privacy-preserving auction platform
 
 ## Live Demo
 
-Try the live application: [https://zama-fhe-privacy-auction.vercel.app/](https://zama-fhe-privacy-auction.vercel.app/)
+Try the live application: [https://zama-fhe-privacyauction.vercel.app/](https://zama-fhe-privacyauction.vercel.app/)
 
 ![界面截图](./image1.png)
 
