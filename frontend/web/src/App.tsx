@@ -46,11 +46,7 @@ export default function App() {
   const [currentAuction, setCurrentAuction] = useState<Auction | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      loadAuctions().finally(() => setLoading(false));
-    }, 3000);
-    
-    return () => clearTimeout(timer);
+    loadAuctions().finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
