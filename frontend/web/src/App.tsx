@@ -133,7 +133,14 @@ export default function App() {
       for (let i = 0; i < nextId; i++) {
         try {
           const aRaw = await contract.auctions(i);
-          const stats = await contract.getAuctionStats(i);
+          
+          let stats;
+          try {
+            stats = await contract.getAuctionStats(i);
+          } catch (statsError) {
+            console.warn(`Failed to get stats for auction ${i}`, statsError);
+            stats = [0, 0, 0, 0];
+          }
           
           list.push({
             id: i,
@@ -149,7 +156,21 @@ export default function App() {
             averageBid: Number(stats[1]),
           });
         } catch (e) {
-          console.warn(`Failed to load auction ${i}`, e);
+          console.error(`Failed to load auction ${i}`, e);
+          
+          list.push({
+            id: i,
+            creator: "0x0000000000000000000000000000000000000000",
+            item: "Invalid Auction",
+            description: "Failed to load auction data",
+            deadline: 0,
+            terminated: false,
+            winner: "0x0000000000000000000000000000000000000000",
+            highestBid: 0,
+            lowestBid: 0,
+            bidCount: 0,
+            averageBid: 0,
+          });
         }
       }
       
