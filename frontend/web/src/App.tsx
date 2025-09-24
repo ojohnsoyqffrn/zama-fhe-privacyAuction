@@ -45,34 +45,13 @@ export default function App() {
   const [showBidModal, setShowBidModal] = useState(false);
   const [currentAuction, setCurrentAuction] = useState<Auction | null>(null);
 
-  const diagnoseNetwork = async () => {
-    try {
-      if (typeof window === 'undefined' || typeof window.ethereum === 'undefined') {
-        return false;
-      }
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const network = await provider.getNetwork();
-      await provider.getCode(config.contractAddress);
-      await provider.send("eth_accounts", []);
-
-      new ethers.Contract(
-        config.contractAddress,
-        ABI,
-        provider
-      );
-      
-      return true; 
-    } catch (error) {
-      return false; 
-    }
-  };
-
   useEffect(() => {
-    diagnoseNetwork().then(() => {
-    });
-    loadAuctions().finally(() => setLoading(false));
+    const timer = setTimeout(() => {
+      loadAuctions().finally(() => setLoading(false));
+    }, 3000);
+    
+    return () => clearTimeout(timer);
   }, []);
-
 
   useEffect(() => {
     if (account && auctions.length > 0) {
